@@ -1,7 +1,6 @@
-package com.cool.myfashion.ui.main
+package com.cool.myfashion.viewmodel
 
 import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cool.myfashion.R
+import com.cool.myfashion.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 

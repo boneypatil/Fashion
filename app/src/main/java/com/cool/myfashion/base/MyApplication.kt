@@ -1,0 +1,44 @@
+package com.cool.myfashion.base
+
+import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.cool.myfashion.di.dashboardModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+
+/**
+ * Created by u.zafar
+ * on 26 Dec, 2019
+ * at 11:29
+ */
+class MyApplication : Application() {
+
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onCreate() {
+        super.onCreate()
+        initConnectionUtil()
+
+
+        // Start Koin
+        startKoin {
+            androidLogger()
+            androidContext(this@MyApplication)
+            modules(
+                listOf(
+                    dashboardModule
+                )
+            )
+        }
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun initConnectionUtil() {
+        DetectConnection.initialize(this)
+    }
+
+}
