@@ -18,5 +18,17 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <ProgressBar
+        android:id="@+id/dashboardLoader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:indeterminateTint="@color/activeIndicatorColor"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

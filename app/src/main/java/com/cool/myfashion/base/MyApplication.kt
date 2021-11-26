@@ -9,9 +9,8 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
 /**
- * Created by u.zafar
- * on 26 Dec, 2019
- * at 11:29
+ * Created by rahul.p
+ *
  */
 class MyApplication : Application() {
 

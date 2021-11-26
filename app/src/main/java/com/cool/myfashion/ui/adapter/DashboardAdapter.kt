@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.*
 import com.cool.myfashion.R
 import com.cool.myfashion.databinding.ItemCarouselWidgetBinding
@@ -18,14 +19,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
  * Created by rahul,p
  *
  */
-class DashboardAdapter :
+class DashboardAdapter(private val listener: (url: String, pos: Int) -> Unit) :
     ListAdapter<Content, DashboardContentViewHolder>(ProgressDataDiffCallback()) {
-
-    var dataSize = 0
-    override fun submitList(list: MutableList<Content>?) {
-        super.submitList(list)
-        dataSize = list?.size ?: 0
-    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DashboardContentViewHolder {
@@ -79,7 +74,7 @@ class DashboardAdapter :
             R.layout.item_carousel_widget -> {
                 val carouseHolder = holder as DashboardContentCarouselWidget
                 carouseHolder.bind(
-                    item
+                    item, listener, position
                 )
             }
         }
@@ -94,9 +89,7 @@ class DashboardAdapter :
         }
     }
 
-    override fun getItemCount(): Int {
-        return itemCount
-    }
+
 }
 
 abstract class DashboardContentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -106,13 +99,14 @@ class DashboardContentImagesWidget(private val binding: ItemImageWidgetBinding) 
     fun bind(content: Content) {
         initAdapter(content)
     }
+
     private fun initAdapter(content: Content) {
 
         val layoutManager =
             FlexboxLayoutManager(binding.dashboardImageContentRV.context)
         layoutManager.flexWrap = FlexWrap.NOWRAP
 
-     val   mAdapter = DashboardImageAdapter()
+        val mAdapter = DashboardImageAdapter()
         binding.dashboardImageContentRV.layoutManager = layoutManager
         binding.dashboardImageContentRV.isNestedScrollingEnabled = false
         binding.dashboardImageContentRV.adapter = mAdapter
@@ -124,30 +118,51 @@ class DashboardContentImagesWidget(private val binding: ItemImageWidgetBinding) 
 class DashboardContentSliderWidget(private val binding: ItemSliderWidgetBinding) :
     DashboardContentViewHolder(binding.root) {
     fun bind(content: Content) {
-
-        initSliderAdapter(content)
-
+    //   initSliderAdapter(content)
     }
 
-  private fun   initSliderAdapter(content: Content) {
-      val helper: SnapHelper = LinearSnapHelper()
-      helper.attachToRecyclerView(binding.dashboardSliderContentRV)
-      val adapter = DashboardSliderPagerAdapter({
+    private fun initSliderAdapter(content: Content) {
+        if (binding.dashboardSliderContentRV.onFlingListener == null) {
+            val helper = LinearSnapHelper()
+            helper.attachToRecyclerView(binding.dashboardSliderContentRV)
+        }
+        val adapter = DashboardSliderPagerAdapter {
 
-      })
-      binding.dashboardSliderContentRV.adapter = adapter
-      binding.dashboardSliderContentRV.layoutManager =
-          LinearLayoutManager(binding.dashboardSliderContentRV.context, LinearLayoutManager.HORIZONTAL, false)
-      binding.indicator.attachToRecyclerView(binding.dashboardSliderContentRV)
-      adapter.submitList(content.images)
+        }
+        binding.dashboardSliderContentRV.adapter = adapter
+        binding.dashboardSliderContentRV.layoutManager =
+            LinearLayoutManager(
+                binding.dashboardSliderContentRV.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+        binding.indicator.attachToRecyclerView(binding.dashboardSliderContentRV)
+        adapter.submitList(content.images)
     }
 }
 
 class DashboardContentCarouselWidget(private val binding: ItemCarouselWidgetBinding) :
     DashboardContentViewHolder(binding.root) {
-    fun bind(content: Content) {
+    fun bind(content: Content, listener: (url: String, pos: Int) -> Unit, position: Int) {
+        if (content.images.isNullOrEmpty()) {
+            val url = content.url ?: ""
+            val urlPath = url.split("/").last()
 
-
+            listener.invoke(urlPath, position)
+        } else {
+            binding.dashboardCarouselContentRV.apply {
+                size = content.images.size
+                resource = R.layout.item_carousel_card
+                overScrollMode  = 1
+                spacing = 20
+                hideIndicator(true)
+                setCarouselViewListener { view, position ->
+                    val imageView = view.findViewById<ImageView>(R.id.carouselCardBackground)
+                    bindImage(imageView, content.images[position].url)
+                }
+                show()
+            }
+        }
     }
 }
 

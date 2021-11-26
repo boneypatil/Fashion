@@ -5,12 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cool.myfashion.base.BaseViewModel
 import com.cool.myfashion.databinding.MainFragmentBinding
+import com.cool.myfashion.model.CarouselDataMapper
+import com.cool.myfashion.model.Content
+import com.cool.myfashion.model.DashboardContentResult
+import com.cool.myfashion.network.ErrorResult
 import com.cool.myfashion.ui.adapter.DashboardAdapter
+import com.cool.myfashion.utils.show
+import com.cool.myfashion.utils.toast
 import com.cool.myfashion.viewmodel.DashboardViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+
 /**
  * Created by rahul,p
  *
@@ -19,8 +28,11 @@ class MainFragment : Fragment() {
 
     private val viewModel: DashboardViewModel by sharedViewModel()
     private lateinit var binding: MainFragmentBinding
+    private var dashboardData = mutableListOf<Content>()
     private val adapter by lazy {
-        DashboardAdapter()
+        DashboardAdapter { url, pos ->
+            viewModel.fetchCarouselContent(url, pos)
+        }
     }
 
     override fun onCreateView(
@@ -36,14 +48,69 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
-
+        setObservers()
     }
 
     private fun initAdapter() {
         binding.dashboardContentRV.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.dashboardContentRV.adapter = this.adapter
-
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchDashBoardContent()
+    }
+
+
+    private fun setObservers() {
+        viewModel.getDashboardContent().observe(viewLifecycleOwner, dashboardContentObserver)
+        viewModel.getCarouselContent().observe(viewLifecycleOwner, carouselContentObserver)
+
+        viewModel.error.observe(viewLifecycleOwner, errorObserver)
+        viewModel.state.observe(viewLifecycleOwner, loadingObserver)
+    }
+
+    /**
+     * Errors
+     */
+    private val errorObserver = Observer<ErrorResult<*>> {
+        handleErrorInActivity(it)
+    }
+
+    private fun handleErrorInActivity(errorResult: ErrorResult<*>) {
+        handleError(errorResult)
+    }
+
+    private val loadingObserver = Observer<BaseViewModel.BaseState> { state ->
+        when (state) {
+            BaseViewModel.BaseState.Loading -> showLoader()
+            BaseViewModel.BaseState.Success,
+            BaseViewModel.BaseState.Error -> showLoader(false)
+        }
+    }
+
+    private fun showLoader(show: Boolean = true) {
+        binding.dashboardLoader show show
+    }
+
+    private val dashboardContentObserver = Observer<DashboardContentResult> {
+        dashboardData = it.content.toMutableList()
+        adapter.submitList(dashboardData)
+    }
+
+    private val carouselContentObserver = Observer<CarouselDataMapper> {
+        val content = dashboardData[it.pos]
+        content.images = it.images
+        dashboardData[it.pos] = content
+        adapter.notifyItemChanged(it.pos, content)
+    }
+
+    private fun handleError(errorResult: ErrorResult<*>) {
+        val message = errorResult.errorMessage
+        if (message.isNotEmpty())
+            context.toast(message)
+    }
+
 
 }

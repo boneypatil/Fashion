@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cool.myfashion.base.BaseViewModel
+import com.cool.myfashion.model.CarouselDataMapper
 import com.cool.myfashion.model.DashboardContentResult
 
 import kotlinx.coroutines.CoroutineScope
@@ -23,9 +24,12 @@ class DashboardViewModel(
 ) : BaseViewModel(application) {
 
     private val dashboardContentLiveData = MutableLiveData<DashboardContentResult>()
+    private val carouselContentLiveData = MutableLiveData<CarouselDataMapper>()
 
 
-    fun getSubscriptions(): LiveData<DashboardContentResult> = dashboardContentLiveData
+
+    fun getDashboardContent(): LiveData<DashboardContentResult> = dashboardContentLiveData
+    fun getCarouselContent(): LiveData<CarouselDataMapper> = carouselContentLiveData
 
 
     fun fetchDashBoardContent() {
@@ -38,6 +42,22 @@ class DashboardViewModel(
             if (success) {
                 dashboardContent?.let { content->
                     dashboardContentLiveData.postValue(content)
+
+                }
+            }
+        }
+    }
+
+    fun fetchCarouselContent(url:String, pos:Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = repo.getCarouselContentRepo(url)
+            Log.d(this.javaClass.simpleName, "Dashboard  Carousel Content: $result")
+            val dashboardContent = result.get()
+            val success = handleResult(result)
+            if (success) {
+                dashboardContent?.let { content->
+                    val carouselMapper = CarouselDataMapper(pos,dashboardContent.images)
+                    carouselContentLiveData.postValue(carouselMapper)
 
                 }
             }
