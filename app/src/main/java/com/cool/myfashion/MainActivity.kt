@@ -2,7 +2,7 @@ package com.cool.myfashion
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.cool.myfashion.ui.main.MainFragment
+import com.cool.myfashion.ui.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

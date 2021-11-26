@@ -1,12 +1,22 @@
 package com.cool.myfashion.model
 
+import com.squareup.moshi.Json
+
 /**
  * Created by rahul.p
  *
  */
 data class Content (
-
-	val type : String,
+	val type : Type,
 	val cols : Int,
 	val images : List<Images>
 )
+
+enum class Type {
+	@Json(name = "image")
+	Image,
+	@Json(name = "carousel")
+	Carousel,
+	@Json(name = "slider")
+	Slider,
+}
