@@ -154,7 +154,9 @@ class DashboardContentSliderWidget(private val binding: ItemSliderWidgetBinding)
         if (binding.dashboardSliderContentRV.onFlingListener == null) {
             val helper = LinearSnapHelper()
             helper.attachToRecyclerView(binding.dashboardSliderContentRV)
+
         }
+
         val adapter = DashboardSliderPagerAdapter(imageClickedListener)
         adapter.setHasStableIds(true)
         binding.dashboardSliderContentRV.adapter = adapter
