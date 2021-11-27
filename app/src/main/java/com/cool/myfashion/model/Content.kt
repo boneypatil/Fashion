@@ -9,9 +9,9 @@ import com.squareup.moshi.Json
 data class Content(
     val type: Type,
     val cols: Int,
-    val show: Int? = 0,
-    val title: String? = null,
-    val url: String? = null,
+    val show: Int,
+    val title: String,
+    val url: String,
     var images: List<Images>
 )
 
