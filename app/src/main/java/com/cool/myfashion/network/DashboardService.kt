@@ -1,6 +1,6 @@
 package com.cool.myfashion.network
 
-import com.cool.myfashion.model.CarouselResult
+import com.cool.myfashion.model.ImagesResult
 import com.cool.myfashion.model.DashboardContentResult
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
@@ -12,7 +12,11 @@ import retrofit2.http.*
 interface DashboardService {
     @GET(value = "/content")
     fun getDashboardContentAsync(): Deferred<DashboardContentResult>
+
     @GET(value = "/{url}")
-    fun getCarouselContentAsync(@Path(value = "url") url: String): Deferred<CarouselResult>
+    fun getCarouselContentAsync(@Path(value = "url") url: String): Deferred<ImagesResult>
+
+    @GET(value = "/list")
+    fun getDetailImageContentAsync(): Deferred<ImagesResult>
 
 }

@@ -9,7 +9,7 @@
     android:layout_height="wrap_content"
     tools:context=".ui.MainFragment">
 
-    <com.jama.carouselview.CarouselView
+<androidx.recyclerview.widget.RecyclerView
     android:id="@+id/dashboardCarouselContentRV"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

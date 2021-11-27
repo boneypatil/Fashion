@@ -1,7 +1,7 @@
 package com.cool.myfashion.model
 
 
-data class CarouselResult (
+data class ImagesResult (
 
 	val images : List<Images>
 )

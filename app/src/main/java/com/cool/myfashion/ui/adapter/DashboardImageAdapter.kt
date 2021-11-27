@@ -13,7 +13,7 @@ import com.cool.myfashion.model.Images
  * Created by rahul,p
  *
  */
-class DashboardImageAdapter :
+class DashboardImageAdapter(private val imageClickedListener: (image: Images) -> Unit) :
     ListAdapter<Images, DashboardImageAdapter.ImageResultHolder>(ImageDataDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageResultHolder {
@@ -29,6 +29,7 @@ class DashboardImageAdapter :
     override fun onBindViewHolder(holder: ImageResultHolder, position: Int) {
         val item = getItem(position)
         holder.itemView.setOnClickListener {
+            imageClickedListener.invoke(item)
         }
 
         holder.bind(item)

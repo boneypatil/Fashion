@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">My Fashion</string>
+    <string name="images_selected">extra_intent_images</string>
 </resources>

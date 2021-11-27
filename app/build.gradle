@@ -128,8 +128,7 @@ dependencies {
    // page indicator
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.1"
 
-    //CarouselView
-    implementation 'com.github.jama5262:CarouselView:1.2.2'
+
 
 
 
