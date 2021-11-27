@@ -180,6 +180,7 @@ class DashboardContentCarouselWidget(private val binding: ItemCarouselWidgetBind
             listener.invoke(urlPath, position)
         } else {
 
+            binding.dashboardCarouselTitle.text = content.title
             val adapter = DashboardImageAdapter(imageClickedListener)
             adapter.setHasStableIds(true)
             binding.dashboardCarouselContentRV.adapter = adapter

@@ -9,14 +9,31 @@
     android:layout_height="wrap_content"
     tools:context=".ui.DashboardFragment">
 
+    <TextView
+        android:id="@+id/dashboardCarouselTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="TextView"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/dashboardCarouselContentRV"
+ />
+
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/dashboardCarouselContentRV"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/dashboardCarouselTitle"
     app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

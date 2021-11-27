@@ -1,14 +1,13 @@
-package com.cool.myfashion
+package com.cool.myfashion.ui
 
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.cool.myfashion.R
 import com.cool.myfashion.base.BaseDashboardFragment
 import com.cool.myfashion.model.Images
-import com.cool.myfashion.ui.DetailsScreenFragment
-import com.cool.myfashion.ui.DashboardFragment
 
 class MainActivity : AppCompatActivity(), BaseDashboardFragment.DashboardListener {
 

@@ -17,6 +17,7 @@ import com.cool.myfashion.network.ErrorResult
 import com.cool.myfashion.ui.adapter.DashboardAdapter
 import com.cool.myfashion.utils.enforceSingleScrollDirection
 import com.cool.myfashion.utils.show
+import com.cool.myfashion.utils.toast
 import com.cool.myfashion.viewmodel.DashboardViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -97,8 +98,16 @@ class DashboardFragment : BaseDashboardFragment() {
     }
 
     private val dashboardContentObserver = Observer<DashboardContentResult> {
+        if (it.content.isEmpty()) {
+            showErrorMessage()
+            return@Observer
+        }
         dashboardData = it.content.toMutableList()
         adapter.submitList(dashboardData)
+    }
+
+    private fun showErrorMessage() {
+        context.toast("No data found,\n Please try again later ")
     }
 
     private val carouselContentObserver = Observer<CarouselDataMapper> {
