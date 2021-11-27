@@ -51,18 +51,17 @@ class MainFragment : BaseDashboardFragment() {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         setObservers()
+
+
         viewModel.fetchDashBoardContent()
     }
 
     private fun initAdapter() {
-        binding.dashboardContentRV.layoutManager =
-            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        val manager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        manager.initialPrefetchItemCount = 4
+        binding.dashboardContentRV.layoutManager = manager
         binding.dashboardContentRV.adapter = this.adapter
         binding.dashboardContentRV.enforceSingleScrollDirection()
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
 

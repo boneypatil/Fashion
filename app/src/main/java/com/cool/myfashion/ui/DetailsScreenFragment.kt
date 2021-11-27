@@ -46,13 +46,15 @@ class DetailsScreenFragment : BaseDashboardFragment() {
     }
 
     private fun initAdapter() {
-        binding.dashboardContentRV.layoutManager =
-            GridLayoutManager(
-                context,
-                2,
-                GridLayoutManager.VERTICAL,
-                false
-            )
+        val manager = GridLayoutManager(
+            context,
+            2,
+            GridLayoutManager.VERTICAL,
+            false
+        )
+        manager.initialPrefetchItemCount = 4
+        binding.dashboardContentRV.layoutManager =manager
+
         binding.dashboardContentRV.adapter = adapter
         binding.dashboardContentRV.isNestedScrollingEnabled = false
         binding.dashboardContentRV.setHasFixedSize(false)
