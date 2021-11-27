@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.cool.myfashion.base.BaseDashboardFragment
 import com.cool.myfashion.model.Images
 import com.cool.myfashion.ui.DetailsScreenFragment
-import com.cool.myfashion.ui.MainFragment
+import com.cool.myfashion.ui.DashboardFragment
 
 class MainActivity : AppCompatActivity(), BaseDashboardFragment.DashboardListener {
 
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), BaseDashboardFragment.DashboardListene
         bundleToSend: Bundle? = null
     ) {
         val fragment: BaseDashboardFragment = when (dashboardScreen) {
-            MyFashionDashboardScreen.DashboardScreen -> MainFragment()
+            MyFashionDashboardScreen.DashboardScreen -> DashboardFragment()
             MyFashionDashboardScreen.DetailScreen -> DetailsScreenFragment()
         }
         fragment.setListener(this)

@@ -24,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * Created by rahul,p
  *
  */
-class MainFragment : BaseDashboardFragment() {
+class DashboardFragment : BaseDashboardFragment() {
 
     private val viewModel: DashboardViewModel by sharedViewModel()
     private lateinit var binding: MainFragmentBinding

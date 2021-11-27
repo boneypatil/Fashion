@@ -27,7 +27,7 @@ val dashboardModule = module {
             connectionUtil = DetectConnection
         )
     }
-    single<OkHttpClient> {
+    single {
         OkHttpClient.Builder().apply {
             readTimeout(20L, TimeUnit.SECONDS)
             connectTimeout(20L, TimeUnit.SECONDS)

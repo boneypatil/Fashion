@@ -31,7 +31,6 @@ class DashboardAdapter(
     private val imageClickedListener: (image: Images) -> Unit
 ) :
     ListAdapter<Content, DashboardContentViewHolder>(ProgressDataDiffCallback()) {
-    private var viewPool = RecyclerView.RecycledViewPool()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DashboardContentViewHolder {
@@ -73,19 +72,19 @@ class DashboardAdapter(
         when (holder.itemViewType) {
             R.layout.item_image_widget -> {
                 val imageHolder = holder as DashboardContentImagesWidget
-                imageHolder.bind(item, imageClickedListener,viewPool)
+                imageHolder.bind(item, imageClickedListener)
             }
 
             R.layout.item_slider_widget -> {
                 val sliderHolder = holder as DashboardContentSliderWidget
                 sliderHolder.bind(
-                    item, imageClickedListener,viewPool
+                    item, imageClickedListener
                 )
             }
             R.layout.item_carousel_widget -> {
                 val carouseHolder = holder as DashboardContentCarouselWidget
                 carouseHolder.bind(
-                    item, listener, position, imageClickedListener,viewPool
+                    item, listener, position, imageClickedListener
                 )
             }
         }
@@ -109,17 +108,14 @@ class DashboardContentImagesWidget(private val binding: ItemImageWidgetBinding) 
     DashboardContentViewHolder(binding.root) {
     fun bind(
         content: Content,
-        imageClickedListener: (image: Images) -> Unit,
-        viewPool: RecycledViewPool
+        imageClickedListener: (image: Images) -> Unit
     ) {
-        initAdapter(content, imageClickedListener,viewPool)
+        initAdapter(content, imageClickedListener)
     }
 
     private fun initAdapter(
         content: Content,
-        imageClickedListener: (image: Images) -> Unit,
-        viewPool: RecycledViewPool
-    ) {
+        imageClickedListener: (image: Images) -> Unit) {
 
         val layoutManager =
             FlexboxLayoutManager(binding.dashboardImageContentRV.context)
@@ -140,17 +136,13 @@ class DashboardContentSliderWidget(private val binding: ItemSliderWidgetBinding)
     DashboardContentViewHolder(binding.root) {
     fun bind(
         content: Content,
-        imageClickedListener: (image: Images) -> Unit,
-        viewPool: RecycledViewPool
-    ) {
-        initSliderAdapter(content, imageClickedListener,viewPool)
+        imageClickedListener: (image: Images) -> Unit) {
+        initSliderAdapter(content, imageClickedListener)
     }
 
     private fun initSliderAdapter(
         content: Content,
-        imageClickedListener: (image: Images) -> Unit,
-        viewPool: RecycledViewPool
-    ) {
+        imageClickedListener: (image: Images) -> Unit) {
         if (binding.dashboardSliderContentRV.onFlingListener == null) {
             val helper = LinearSnapHelper()
             helper.attachToRecyclerView(binding.dashboardSliderContentRV)
@@ -180,9 +172,7 @@ class DashboardContentCarouselWidget(private val binding: ItemCarouselWidgetBind
         content: Content,
         listener: (url: String, pos: Int) -> Unit,
         position: Int,
-        imageClickedListener: (image: Images) -> Unit,
-        viewPool: RecycledViewPool
-    ) {
+        imageClickedListener: (image: Images) -> Unit) {
         if (content.images.isNullOrEmpty()) {
             val url = content.url
             val urlPath = url.split("/").last()
