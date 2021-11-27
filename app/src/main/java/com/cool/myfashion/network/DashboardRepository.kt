@@ -1,6 +1,6 @@
 package com.cool.myfashion.network
 
-import com.cool.myfashion.base.BaseAuthenticatedRepository
+import com.cool.myfashion.base.BaseRepository
 import com.cool.myfashion.base.DetectConnection
 import com.cool.myfashion.model.ImagesResult
 import com.cool.myfashion.model.DashboardContentResult
@@ -13,7 +13,7 @@ import com.cool.myfashion.model.DashboardContentResult
 class DashboardRepository(
     private val service: DashboardService,
     connectionUtil: DetectConnection
-) : BaseAuthenticatedRepository(connectionUtil) {
+) : BaseRepository(connectionUtil) {
 
     suspend fun getDashboardContentRepo(): Result<DashboardContentResult> =
         executeForResponse(

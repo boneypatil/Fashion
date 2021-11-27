@@ -4,24 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.cool.myfashion.base.BaseDashboardFragment
 import com.cool.myfashion.base.BaseViewModel
 import com.cool.myfashion.databinding.MainFragmentBinding
-import com.cool.myfashion.model.CarouselDataMapper
-import com.cool.myfashion.model.Content
-import com.cool.myfashion.model.DashboardContentResult
 import com.cool.myfashion.model.ImagesResult
 import com.cool.myfashion.network.ErrorResult
-import com.cool.myfashion.ui.adapter.DashboardAdapter
 import com.cool.myfashion.ui.adapter.DashboardImageAdapter
-import com.cool.myfashion.utils.enforceSingleScrollDirection
 import com.cool.myfashion.utils.show
-import com.cool.myfashion.utils.toast
 import com.cool.myfashion.viewmodel.DashboardViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -34,7 +25,7 @@ class DetailsScreenFragment : BaseDashboardFragment() {
     private val viewModel: DashboardViewModel by sharedViewModel()
     private lateinit var binding: MainFragmentBinding
     private val adapter by lazy {
-        DashboardImageAdapter{}
+        DashboardImageAdapter {}
     }
 
     override fun onCreateView(
@@ -51,7 +42,9 @@ class DetailsScreenFragment : BaseDashboardFragment() {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         setObservers()
+        viewModel.fetchDetailImageContent()
     }
+
     private fun initAdapter() {
         binding.dashboardContentRV.layoutManager =
             GridLayoutManager(
@@ -63,11 +56,6 @@ class DetailsScreenFragment : BaseDashboardFragment() {
         binding.dashboardContentRV.adapter = adapter
         binding.dashboardContentRV.isNestedScrollingEnabled = false
         binding.dashboardContentRV.setHasFixedSize(false)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchDetailImageContent()
     }
 
 
@@ -99,6 +87,12 @@ class DetailsScreenFragment : BaseDashboardFragment() {
 
     private val imageContentObserver = Observer<ImagesResult> {
         adapter.submitList(it.images)
+    }
+
+
+    override fun onDetach() {
+        super.onDetach()
+        adapter.submitList(null)
     }
 
 }

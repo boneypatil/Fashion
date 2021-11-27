@@ -51,6 +51,7 @@ class MainFragment : BaseDashboardFragment() {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         setObservers()
+        viewModel.fetchDashBoardContent()
     }
 
     private fun initAdapter() {
@@ -62,7 +63,6 @@ class MainFragment : BaseDashboardFragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.fetchDashBoardContent()
     }
 
 

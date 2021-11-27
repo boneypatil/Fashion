@@ -12,7 +12,7 @@ import retrofit2.HttpException
  * Created by rahul.p
  *
  */
-abstract class BaseAuthenticatedRepository(
+abstract class BaseRepository(
     private val connectionUtil: DetectConnection
 ) {
 
@@ -36,24 +36,6 @@ abstract class BaseAuthenticatedRepository(
 
         }
     }
-
-
-    suspend fun <T> executeForResponse(request: Deferred<T>): Result<T> {
-        return try {
-
-            val response = request.await()
-            logit("Login Request Response: $response")
-            Success(response)
-        } catch (e: HttpException) {
-            logit("Login Request Error Response: ${e.message()}")
-            ErrorResult(e.code(), e.message())
-        } catch (e: Exception) {
-            logit("Login Request Exception: ${e.message}")
-            connectionUtil.getErrorMessage()
-        }
-    }
-
-
 
 
     private fun logit(message: String) {
