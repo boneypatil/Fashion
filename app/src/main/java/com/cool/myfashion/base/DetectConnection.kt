@@ -84,12 +84,12 @@ object DetectConnection {
     fun <T> getErrorMessage(e: Exception? = null) =
         when {
             internetConnectivityIssue() ->
-                ErrorResult<T>(
+                ErrorResult(
                     ErrorCodes.ERROR_NO_CONNECTION,
                     "Please check your internet connection and try again"
                 )
             e is SocketTimeoutException ->
-                ErrorResult<T>(
+                ErrorResult(
                     ErrorCodes.ERROR_TIMEOUT,
                     "Your request is taking too long to get a response. Please try again after some time."
                 )

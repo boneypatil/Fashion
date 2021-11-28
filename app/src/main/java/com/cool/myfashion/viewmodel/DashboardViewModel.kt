@@ -2,16 +2,14 @@ package com.cool.myfashion.viewmodel
 
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.cool.myfashion.base.BaseViewModel
 import com.cool.myfashion.model.CarouselDataMapper
 import com.cool.myfashion.model.DashboardContentResult
 import com.cool.myfashion.model.ImagesResult
 import com.cool.myfashion.network.DashboardRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -35,9 +33,8 @@ class DashboardViewModel(
 
     fun fetchDashBoardContent() {
         state.postValue(BaseState.Loading)
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             val result = repo.getDashboardContentRepo()
-            Log.d(this.javaClass.simpleName, "Dashboard Content: $result")
             val dashboardContent = result.get()
             val success = handleResult(result)
             if (success) {
@@ -50,9 +47,8 @@ class DashboardViewModel(
     }
 
     fun fetchCarouselContent(url: String, pos: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             val result = repo.getCarouselContentRepo(url)
-            Log.d(this.javaClass.simpleName, "Dashboard  Carousel Content: $result")
             val dashboardContent = result.get()
             val success = handleResult(result)
             if (success) {
@@ -67,9 +63,8 @@ class DashboardViewModel(
 
     fun fetchDetailImageContent() {
         state.postValue(BaseState.Loading)
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             val result = repo.getDetailImageRepo()
-            Log.d(this.javaClass.simpleName, "Detail Image Content: $result")
             val dashboardContent = result.get()
             val success = handleResult(result)
             if (success) {

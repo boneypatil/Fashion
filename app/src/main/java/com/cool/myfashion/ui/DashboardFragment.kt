@@ -17,6 +17,7 @@ import com.cool.myfashion.network.ErrorResult
 import com.cool.myfashion.ui.adapter.DashboardAdapter
 import com.cool.myfashion.utils.enforceSingleScrollDirection
 import com.cool.myfashion.utils.show
+import com.cool.myfashion.utils.toast
 import com.cool.myfashion.viewmodel.DashboardViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -24,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * Created by rahul,p
  *
  */
-class MainFragment : BaseDashboardFragment() {
+class DashboardFragment : BaseDashboardFragment() {
 
     private val viewModel: DashboardViewModel by sharedViewModel()
     private lateinit var binding: MainFragmentBinding
@@ -51,18 +52,17 @@ class MainFragment : BaseDashboardFragment() {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         setObservers()
+
+
+        viewModel.fetchDashBoardContent()
     }
 
     private fun initAdapter() {
-        binding.dashboardContentRV.layoutManager =
-            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        val manager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        manager.initialPrefetchItemCount = 4
+        binding.dashboardContentRV.layoutManager = manager
         binding.dashboardContentRV.adapter = this.adapter
         binding.dashboardContentRV.enforceSingleScrollDirection()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchDashBoardContent()
     }
 
 
@@ -98,8 +98,16 @@ class MainFragment : BaseDashboardFragment() {
     }
 
     private val dashboardContentObserver = Observer<DashboardContentResult> {
+        if (it.content.isEmpty()) {
+            showErrorMessage()
+            return@Observer
+        }
         dashboardData = it.content.toMutableList()
         adapter.submitList(dashboardData)
+    }
+
+    private fun showErrorMessage() {
+        context.toast("No data found,\n Please try again later ")
     }
 
     private val carouselContentObserver = Observer<CarouselDataMapper> {

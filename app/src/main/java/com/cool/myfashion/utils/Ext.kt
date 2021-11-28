@@ -5,7 +5,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import java.lang.Math.abs
 
 /**
  * Created by rahul,p
@@ -14,6 +13,7 @@ import java.lang.Math.abs
 infix fun View?.show(show: Boolean) {
     this?.visibility = if (show) View.VISIBLE else View.GONE
 }
+
 infix fun Context?.toast(message: CharSequence?) = message?.let {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
@@ -73,7 +73,8 @@ private class SingleScrollDirectionEnforcer : RecyclerView.OnScrollListener(),
                 val canScrollVertically = layoutManager.canScrollVertically()
                 if (canScrollHorizontally != canScrollVertically) {
                     if ((canScrollHorizontally && kotlin.math.abs(dy) > kotlin.math.abs(dx))
-                        || (canScrollVertically && kotlin.math.abs(dx) > kotlin.math.abs(dy))) {
+                        || (canScrollVertically && kotlin.math.abs(dx) > kotlin.math.abs(dy))
+                    ) {
                         recyclerView.stopScroll()
                     }
                 }

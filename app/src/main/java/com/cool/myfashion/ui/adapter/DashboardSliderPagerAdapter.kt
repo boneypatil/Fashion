@@ -32,6 +32,11 @@ class DashboardSliderPagerAdapter(private var imageClickedListener: (Images) -> 
         RecyclerView.ViewHolder(binding.root) {
         fun bindView(imageItem: Images) {
             binding.image = imageItem
+            val scale: Float =  binding.cardBackground.resources.displayMetrics.density
+            val height = imageItem.height
+            val heightPixels = (height * scale + 0.5f)
+
+            binding.cardBackground.layoutParams.height = heightPixels.toInt()
         }
     }
 

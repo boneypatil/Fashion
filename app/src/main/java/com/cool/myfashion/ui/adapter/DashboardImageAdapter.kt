@@ -39,6 +39,17 @@ class DashboardImageAdapter(private val imageClickedListener: (image: Images) ->
         RecyclerView.ViewHolder(binding.root) {
         fun bind(imageItem: Images) {
             binding.image = imageItem
+            if(itemCount>1) {
+                val scale: Float = binding.itemSegmentLevelsImage.resources.displayMetrics.density
+                val width = imageItem.width
+                val height = imageItem.height
+                val widthPixels = (width * scale + 0.5f)
+                val heightPixels = (height * scale + 0.5f)
+
+                binding.itemSegmentLevelsImage.layoutParams.width = widthPixels.toInt()
+                binding.itemSegmentLevelsImage.layoutParams.height = heightPixels.toInt()
+            }
+
         }
 
     }
